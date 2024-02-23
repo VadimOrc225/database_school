@@ -29,7 +29,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mention annotated entity class -->
-        <mapping class="ru.geekbrains.junior.lesson4.models.Course"/>
+        <mapping class="ru.geekbrains.junior.lesson4.models.Notebook"/>
 
     </session-factory>
 </hibernate-configuration>
