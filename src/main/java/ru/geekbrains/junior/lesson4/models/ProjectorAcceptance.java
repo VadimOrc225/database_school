@@ -6,65 +6,66 @@ import org.hibernate.cfg.Configuration;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-public class NotebookAcceptance extends JFrame implements LoggerView {
+public class ProjectorAcceptance extends JFrame implements LoggerView {
     public static final int WIDTH = 480;
     public static final int HEIGHT = 300;
-    JButton btnDeleteNotebook;
-    JTextField notebookNumber;
+    JButton btnDeleteProjector;
+    JTextField projectorNumber;
     String textSum = "";
 
     JPanel headerPanel;
     JTextArea log;
 
-    public NotebookAcceptance() {
+    public ProjectorAcceptance() {
         // Создание фабрики сессий
-        SessionFactory sessionFactory1 = new Configuration()
+        SessionFactory sessionFactory3 = new Configuration()
                 .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Notebook.class)
+                .addAnnotatedClass(Projector.class)
                 .buildSessionFactory();
         setSize(WIDTH, HEIGHT);
-        setLocation(895, 80);
+        setLocation(895, 380);
         setResizable(false);
-        setTitle("ПРИЕМ НОУТБУКА. Заполните поле!");
+        setTitle("ПРИЕМ ПРОЕКТОРА. Заполните поле!");
 
-        createPanelNotebook(sessionFactory1);
+        createPanelProjector(sessionFactory3);
         setVisible(true);
     }
 
-    private void createPanelNotebook(SessionFactory sessionFactory1) {
+    private void createPanelProjector(SessionFactory sessionFactory3) {
         headerPanel = new JPanel();
-        notebookNumber = new JTextField("НОМЕР НОУТБУКА");
-        notebookNumber.addKeyListener(new KeyAdapter() {
+        projectorNumber = new JTextField("НОМЕР ПРОЕКТОРА");
+        projectorNumber.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n') {
-                    Session session1 = sessionFactory1.getCurrentSession();
-                    int counter = 0;
+                    Session session1 = sessionFactory3.getCurrentSession();
                     try {
                         session1.beginTransaction();
-                        String readDataSQL = "SELECT * FROM Notebooks;";
-                        List<Notebook> notebooksOnHandsList = (List<Notebook>) session1.createSQLQuery(readDataSQL).addEntity(Notebook.class).list();
+                        String readDataSQL = "SELECT * FROM Projectors;";
+                        List<Projector> notebooksOnHandsList = (List<Projector>) session1.createSQLQuery(readDataSQL).addEntity(Projector.class).list();
                         // List<Course> coursesList =  query.list();
-                        log.append("СПИСОК ВЫДАННЫХ НОУТБУКОВ:");
-                        for (Notebook notebookX : notebooksOnHandsList) {
-                            log.append("\n" + notebookX);
-                            if (notebookX.getNumber() == Integer.parseInt(notebookNumber.getText())) {
-                                Notebook retrievedNotebook = notebookX;
-                                log.append("\n" + "Удаляется из списка (принимается) ноутбук " + retrievedNotebook.getNumber());
-                                counter++;
+                        log.append("СПИСОК ВЫДАННЫХ ПРОЕКТОРОВ:");
+                        for (Projector projectorX : notebooksOnHandsList) {
+                            log.append("\n" + projectorX);
+                            if (Objects.equals(projectorX.getNumber(), projectorNumber.getText())) {
+                                Projector retrievedProjector = projectorX;
+                                log.append("\n" + "Удаляется из списка (принимается) проектор " + retrievedProjector.getNumber());
                             }
-
+                            else log.append("\n" + "Проектора " + projectorNumber.getText()+ " нет в списке выданных! Введите другой номер!");
                         }
-                        if(counter==0) log.append("\n" + "Ноутбука " + notebookNumber.getText()+ " нет в списке выданных! Введите другой номер!");
-                        Integer.parseInt(notebookNumber.getText());
-                        notebookNumber.setForeground(Color.GREEN);
+
+                        projectorNumber.setForeground(Color.GREEN);
                     } catch (NumberFormatException ex) {
-                        System.out.println("Введите число");
+                        System.out.println("УПС");
 
                     } finally {
                         session1.getTransaction().commit();
@@ -77,33 +78,33 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                 }
             }
         });
-        headerPanel.add(notebookNumber);
+        headerPanel.add(projectorNumber);
         add(headerPanel, BorderLayout.NORTH);
         log = new JTextArea();
         log.setEditable(false);
         add(new JScrollPane(log));
 
-        add(btnDeleteNotebook = new JButton("Удалить ноутбук из списка выданных"), BorderLayout.SOUTH);
+        add(btnDeleteProjector = new JButton("Удалить проектор из списка выданных"), BorderLayout.SOUTH);
 
-        btnDeleteNotebook.addActionListener(new ActionListener() {
+        btnDeleteProjector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
                     LocalDateTime currentDateTime = LocalDateTime.now();
                     log.removeAll();
                     // Удаление данных
-                    Session session2 = sessionFactory1.getCurrentSession();
+                    Session session2 = sessionFactory3.getCurrentSession();
                     try {
                         // Начало транзакции
                         session2.beginTransaction();
                         log.removeAll();
-                        String numberOfNotebook = notebookNumber.getText();
-                        String readDataSQL1 = "DELETE FROM Notebooks WHERE number=" + numberOfNotebook;
+                        String numberOfProjector = projectorNumber.getText();
+                        String readDataSQL1 = "DELETE FROM Projectors WHERE number=" + numberOfProjector;
 
                         session2.createSQLQuery(readDataSQL1).executeUpdate();
 
-                        log.append("\n" + "Ноутбук " +  numberOfNotebook + " удален из списка выданных");
-                        saveInLog("Notebook " +  numberOfNotebook + " were deleted from Notebooks successfully, " + currentDateTime.toString());
+                        log.append("\n" + "Проектор " +  numberOfProjector + " удален из списка выданных");
+                        saveInLog("Projector " +  numberOfProjector + " were deleted from Notebooks successfully, " + currentDateTime.toString());
                         // Коммит транзакции
                         session2.getTransaction().commit();
 
