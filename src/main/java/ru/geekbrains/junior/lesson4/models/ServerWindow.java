@@ -95,6 +95,7 @@ public class ServerWindow extends JFrame implements LoggerView {
             public void actionPerformed(ActionEvent e) {
                 if (true) {
                     log.append("\n" + "Выдайте проектор! ");
+                    ProjectorIssuance projectorIssuance = new ProjectorIssuance();
                 } else {
 
                     saveInLog("Что-то не так!");
@@ -106,11 +107,12 @@ public class ServerWindow extends JFrame implements LoggerView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
-                    System.out.println("ОТДАЙ проектор!");
-                    log.append("\n" + "ОТДАЙ проектор ");
+
+                    log.append("\n" + "Примите проектор. Проверьте комплектность ");
+                    ProjectorAcceptance projectorAcceptance = new ProjectorAcceptance();
                 } else {
 
-                    saveInLog("Сервер запущен!");
+                    saveInLog("Что-то не так!");
                 }
             }
         });

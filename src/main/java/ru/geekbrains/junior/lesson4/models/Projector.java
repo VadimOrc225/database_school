@@ -2,9 +2,10 @@ package ru.geekbrains.junior.lesson4.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+
 @Entity
-@Table(name = "Notebooks")
-public class Notebook {
+@Table(name = "Projectors")
+public class Projector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -12,12 +13,12 @@ public class Notebook {
 //    private int number;
     private String lastname;
     private String group1;
-    private int number;
+    private String number;
 
     @Basic
     private Timestamp sqlTimestamp;
 
-    public Notebook(String lastname, String group1, int number, Timestamp sqlTimestamp) {
+    public Projector(String lastname, String group1, String number, Timestamp sqlTimestamp) {
 
         this.lastname = lastname;
         this.group1 = group1;
@@ -27,7 +28,7 @@ public class Notebook {
 //        this.group = group;
 //        this.dateTime = dateTime;
     }
-    public Notebook(int id, String lastname, String group1, int number, Timestamp sqlTimestamp) {
+    public Projector(int id, String lastname, String group1, String number, Timestamp sqlTimestamp) {
 
         this.id = id;
         this.lastname = lastname;
@@ -37,10 +38,9 @@ public class Notebook {
 //        this.group = group;
 //        this.dateTime = dateTime;
     }
-    public Notebook(){
+    public Projector(){
 
     }
-
 
 
 
@@ -60,7 +60,7 @@ public class Notebook {
         return group1;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -76,13 +76,13 @@ public class Notebook {
 //        this.dateTime = dateTime;
 //    }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
     @Override
     public String toString() {
-        return "Notebook {" +
+        return "Projector {" +
                 "number = " + number +
                 ", взял " + lastname +
                 " из группы " + group1 +
