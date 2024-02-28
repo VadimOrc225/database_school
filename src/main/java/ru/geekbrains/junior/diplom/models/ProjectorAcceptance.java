@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProjectorAcceptance extends JFrame implements LoggerView {
-    public static final int WIDTH = 480;
+    public static final int WIDTH = 475;
     public static final int HEIGHT = 300;
     JButton btnDeleteProjector;
     JTextField projectorNumber;
@@ -30,7 +30,7 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
                 .addAnnotatedClass(Projector.class)
                 .buildSessionFactory();
         setSize(WIDTH, HEIGHT);
-        setLocation(890, 380);
+        setLocation(905, 380);
         setResizable(false);
         setTitle("ПРИЕМ ПРОЕКТОРА. Заполните поле!");
 

@@ -9,8 +9,8 @@ import java.io.FileWriter;
 
 public class ServerWindow extends JFrame implements LoggerView {
 
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 300;
+    public static final int WIDTH = 475;
+    public static final int HEIGHT = 500;
 
 
 
@@ -28,7 +28,7 @@ public class ServerWindow extends JFrame implements LoggerView {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
-        setResizable(false);
+        setResizable(true);
         setTitle("LABORATORY 951");
         setLocationRelativeTo(null);
         createPanel();
@@ -46,13 +46,11 @@ public class ServerWindow extends JFrame implements LoggerView {
         btnDopOperations.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
-                    System.out.println("РАБОТЫ НЕПОЧАТЫЙ КРАЙ!!!");
-                    log.append("\n" + "Тут еще конь не валялся! ");
-                } else {
+                    log.setText("");
+                    log.setForeground(Color.BLACK);
+                    System.out.println("Логи выводятся!!!");
+                    log.append(getLog());
 
-                    saveInLog("Ммммм...");
-                }
             }
         });
     }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class NotebookAcceptance extends JFrame implements LoggerView {
-    public static final int WIDTH = 480;
+    public static final int WIDTH = 475;
     public static final int HEIGHT = 300;
     JButton btnDeleteNotebook;
     JTextField notebookNumber;
@@ -26,7 +26,7 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                 .addAnnotatedClass(Notebook.class)
                 .buildSessionFactory();
         setSize(WIDTH, HEIGHT);
-        setLocation(890, 80);
+        setLocation(905, 80);
         setResizable(false);
         setTitle("ПРИЕМ НОУТБУКА. Заполните поле!");
         createPanelNotebook(sessionFactory1);
