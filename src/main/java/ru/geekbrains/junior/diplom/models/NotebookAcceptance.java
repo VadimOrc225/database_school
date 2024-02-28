@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.lesson4.models;
+package ru.geekbrains.junior.diplom.models;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,8 +16,6 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
     public static final int HEIGHT = 300;
     JButton btnDeleteNotebook;
     JTextField notebookNumber;
-    String textSum = "";
-
     JPanel headerPanel;
     JTextArea log;
 
@@ -28,10 +26,9 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                 .addAnnotatedClass(Notebook.class)
                 .buildSessionFactory();
         setSize(WIDTH, HEIGHT);
-        setLocation(895, 80);
+        setLocation(890, 80);
         setResizable(false);
         setTitle("ПРИЕМ НОУТБУКА. Заполните поле!");
-
         createPanelNotebook(sessionFactory1);
         setVisible(true);
     }
@@ -49,7 +46,7 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                         session1.beginTransaction();
                         String readDataSQL = "SELECT * FROM Notebooks;";
                         List<Notebook> notebooksOnHandsList = (List<Notebook>) session1.createSQLQuery(readDataSQL).addEntity(Notebook.class).list();
-                        // List<Course> coursesList =  query.list();
+                        log.setText("");
                         log.append("СПИСОК ВЫДАННЫХ НОУТБУКОВ:");
                         for (Notebook notebookX : notebooksOnHandsList) {
                             log.append("\n" + notebookX);
@@ -60,7 +57,9 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                             }
 
                         }
-                        if(counter==0) log.append("\n" + "Ноутбука " + notebookNumber.getText()+ " нет в списке выданных! Введите другой номер!");
+                        if(counter==0) { log.append("\n" + "Ноутбука " + notebookNumber.getText()+
+                                " нет в списке выданных! Введите другой номер!");}
+
                         Integer.parseInt(notebookNumber.getText());
                         notebookNumber.setForeground(Color.GREEN);
                     } catch (NumberFormatException ex) {
@@ -90,20 +89,18 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
             public void actionPerformed(ActionEvent e) {
                 if (true) {
                     LocalDateTime currentDateTime = LocalDateTime.now();
-                    log.removeAll();
+
                     // Удаление данных
                     Session session2 = sessionFactory1.getCurrentSession();
                     try {
                         // Начало транзакции
                         session2.beginTransaction();
-                        log.removeAll();
+                        log.setText("");
                         String numberOfNotebook = notebookNumber.getText();
                         String readDataSQL1 = "DELETE FROM Notebooks WHERE number=" + numberOfNotebook;
-
                         session2.createSQLQuery(readDataSQL1).executeUpdate();
-
                         log.append("\n" + "Ноутбук " +  numberOfNotebook + " удален из списка выданных");
-                        saveInLog("Notebook " +  numberOfNotebook + " were deleted from Notebooks successfully, " + currentDateTime.toString());
+                        saveInLog("Ноутбук " +  numberOfNotebook + " удален из списка выданных, " + currentDateTime.toString());
                         // Коммит транзакции
                         session2.getTransaction().commit();
 
@@ -131,7 +128,7 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
 
     @Override
     public void saveInLog(String text) {
-        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/lesson4/log.txt";
+        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/diplom/log.txt";
         try (FileWriter writer = new FileWriter(LOG_PATH, true)) {
             writer.write(text);
             writer.write("\n");

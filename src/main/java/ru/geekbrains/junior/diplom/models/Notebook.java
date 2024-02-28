@@ -1,49 +1,48 @@
-package ru.geekbrains.junior.lesson4.models;
+package ru.geekbrains.junior.diplom.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Projectors")
-public class Projector {
+@Table(name = "Notebooks")
+public class Notebook {
+    //region поля
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-//    private int number;
     private String lastname;
     private String group1;
-    private String number;
-
+    private int number;
     @Basic
     private Timestamp sqlTimestamp;
+    //endregion
 
-    public Projector(String lastname, String group1, String number, Timestamp sqlTimestamp) {
+    //region конструкторы
+    public Notebook(String lastname, String group1, int number, Timestamp sqlTimestamp) {
 
         this.lastname = lastname;
         this.group1 = group1;
         this.number = number;
         this.sqlTimestamp = sqlTimestamp;
 
-//        this.group = group;
-//        this.dateTime = dateTime;
     }
-    public Projector(int id, String lastname, String group1, String number, Timestamp sqlTimestamp) {
+
+    public Notebook(int id, String lastname, String group1, int number, Timestamp sqlTimestamp) {
 
         this.id = id;
         this.lastname = lastname;
         this.group1 = group1;
         this.number = number;
         this.sqlTimestamp = sqlTimestamp;
-//        this.group = group;
-//        this.dateTime = dateTime;
-    }
-    public Projector(){
 
     }
 
+    public Notebook() {
 
+    }
+    //endregion
 
+    //region методы
     public int getId() {
         return id;
     }
@@ -60,7 +59,7 @@ public class Projector {
         return group1;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -72,20 +71,18 @@ public class Projector {
         this.group1 = group1;
     }
 
-//    public void setDateTime(Timestamp dateTime) {
-//        this.dateTime = dateTime;
-//    }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
     @Override
     public String toString() {
-        return "Projector {" +
-                "number = " + number +
+        return "Ноутбук {" +
+                "номер = " + number +
                 ", взял " + lastname +
                 " из группы " + group1 +
                 "; " + sqlTimestamp + '}';
     }
+    //endregion
 }
