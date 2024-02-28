@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.lesson4.models;
+package ru.geekbrains.junior.diplom.models;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,15 +9,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileWriter;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class ProjectorIssuance extends JFrame implements LoggerView {
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 300;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 200;
     JButton btnAddProjector;
     JTextField  studentLastName, projectorNumber, groupNumber;
-    String textSum = "";
-
+    JTextArea log;
     JPanel headerPanel;
 
     public ProjectorIssuance() {
@@ -26,8 +24,8 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Projector.class)
                 .buildSessionFactory();
-        setSize(WIDTH, HEIGHT/2);
-        setLocation(95, 450);
+        setSize(WIDTH, HEIGHT);
+        setLocation(3, 450);
         setResizable(false);
         setTitle("ВЫДАЧА ПРОЕКТОРА. Заполните поля!");
 
@@ -36,6 +34,9 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
     }
     private void createPanelProjector(SessionFactory sessionFactory2) {
         add(createHeaderPanel(), BorderLayout.NORTH);
+        log = new JTextArea();
+        log.setEditable(false);
+        add(new JScrollPane(log));
         add(btnAddProjector = new JButton("Запись информации"), BorderLayout.SOUTH);
 
         btnAddProjector.addActionListener(new ActionListener() {
@@ -54,11 +55,10 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
                     try {
                         // Начало транзакции
                         session.beginTransaction();
+                        log.setText("");
                         session.save(projector);
-                        System.out.println("Object projector saved successfully");
-                        Projector retrievedNotebook = session.get(Projector.class, projector.getId());
-                        System.out.println("Object projector retrieved successfully");
-                        System.out.println("Retrieved projector object: " + retrievedNotebook);
+                        Projector retrievedProjector = session.get(Projector.class, projector.getId());
+                        log.append("Записано: " + retrievedProjector);
                         // Коммит транзакции
                         session.getTransaction().commit();
                     } finally {
@@ -86,7 +86,7 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
 //                        System.out.println("Введите число");
 
 //                    }
-                    textSum= textSum + projectorNumber.getText();
+
                 }
             }
         });
@@ -97,7 +97,7 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n'){
                     studentLastName.setForeground(Color.GREEN);
-                    textSum= textSum + " " + studentLastName.getText();  //To do
+
                 }
             }
         });
@@ -109,7 +109,7 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
                 if (e.getKeyChar() == '\n'){
                     groupNumber.getText();
                     groupNumber.setForeground(Color.GREEN);
-                    textSum = textSum + " " + groupNumber.getText();
+
                 }
 
             }
@@ -135,7 +135,7 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
 
         }
     }
-private void closing (SessionFactory sessionFactory2){
+    private void closing (SessionFactory sessionFactory2){
     sessionFactory2.close();
 }
     @Override
@@ -145,7 +145,7 @@ private void closing (SessionFactory sessionFactory2){
 
     @Override
     public void saveInLog(String text) {
-        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/lesson4/log.txt";
+        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/diplom/log.txt";
         try (FileWriter writer = new FileWriter(LOG_PATH, true)) {
             writer.write(text);
             writer.write("\n");

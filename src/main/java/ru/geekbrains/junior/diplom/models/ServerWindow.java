@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.lesson4.models;
+package ru.geekbrains.junior.diplom.models;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +19,7 @@ public class ServerWindow extends JFrame implements LoggerView {
     JTextArea log;
 
 
-    private final String LOG_PATH = "./src/main/java/ru/geekbrains/junior/lesson4/log.txt";
+    private final String LOG_PATH = "./src/main/java/ru/geekbrains/junior/diplom/log.txt";
 
 //    public Logger logger;
     String textSum = "";
@@ -41,7 +41,7 @@ public class ServerWindow extends JFrame implements LoggerView {
         log = new JTextArea();
         log.setEditable(false);
         add(new JScrollPane(log));
-        add(btnDopOperations = new JButton("Другие операции"), BorderLayout.SOUTH);
+        add(btnDopOperations = new JButton("Вывод списка произведенных операций"), BorderLayout.SOUTH);
 
         btnDopOperations.addActionListener(new ActionListener() {
             @Override
@@ -67,7 +67,9 @@ public class ServerWindow extends JFrame implements LoggerView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
-                    log.append("\n" + "Выдайте ноутбук! Посмотрите на номер ноутбука!");
+                    log.setForeground(Color.RED);
+                    log.setText("");
+                    log.append("\n" + "  Выдайте ноутбук! Посмотрите на номер ноутбука!");
                     NotebookIssuance notebookWindow = new NotebookIssuance();
 
                 } else {
@@ -81,8 +83,9 @@ public class ServerWindow extends JFrame implements LoggerView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
-
-                    log.append("\n" + "Примите ноутбук! Проверьте комплектность");
+                    log.setForeground(Color.RED);
+                    log.setText("");
+                    log.append("\n" + "  Примите ноутбук! Проверьте комплектность");
                     NotebookAcceptance notebookAcceptance = new NotebookAcceptance();
                 } else {
 
@@ -94,7 +97,9 @@ public class ServerWindow extends JFrame implements LoggerView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
-                    log.append("\n" + "Выдайте проектор! ");
+                    log.setForeground(Color.RED);
+                    log.setText("");
+                    log.append("\n" + "  Выдайте проектор! ");
                     ProjectorIssuance projectorIssuance = new ProjectorIssuance();
                 } else {
 
@@ -107,8 +112,9 @@ public class ServerWindow extends JFrame implements LoggerView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
-
-                    log.append("\n" + "Примите проектор. Проверьте комплектность ");
+                    log.setForeground(Color.RED);
+                    log.setText("");
+                    log.append("\n" + "  Примите проектор. Проверьте комплектность ");
                     ProjectorAcceptance projectorAcceptance = new ProjectorAcceptance();
                 } else {
 

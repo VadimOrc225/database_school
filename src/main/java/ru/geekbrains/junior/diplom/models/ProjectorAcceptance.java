@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.lesson4.models;
+package ru.geekbrains.junior.diplom.models;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,8 +20,6 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
     public static final int HEIGHT = 300;
     JButton btnDeleteProjector;
     JTextField projectorNumber;
-    String textSum = "";
-
     JPanel headerPanel;
     JTextArea log;
 
@@ -32,7 +30,7 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
                 .addAnnotatedClass(Projector.class)
                 .buildSessionFactory();
         setSize(WIDTH, HEIGHT);
-        setLocation(895, 380);
+        setLocation(890, 380);
         setResizable(false);
         setTitle("ПРИЕМ ПРОЕКТОРА. Заполните поле!");
 
@@ -52,7 +50,7 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
                         session1.beginTransaction();
                         String readDataSQL = "SELECT * FROM Projectors;";
                         List<Projector> notebooksOnHandsList = (List<Projector>) session1.createSQLQuery(readDataSQL).addEntity(Projector.class).list();
-                        // List<Course> coursesList =  query.list();
+                        log.setText("");
                         log.append("СПИСОК ВЫДАННЫХ ПРОЕКТОРОВ:");
                         for (Projector projectorX : notebooksOnHandsList) {
                             log.append("\n" + projectorX);
@@ -91,20 +89,20 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
             public void actionPerformed(ActionEvent e) {
                 if (true) {
                     LocalDateTime currentDateTime = LocalDateTime.now();
-                    log.removeAll();
+
                     // Удаление данных
                     Session session2 = sessionFactory3.getCurrentSession();
                     try {
                         // Начало транзакции
                         session2.beginTransaction();
-                        log.removeAll();
+                        log.setText("");
                         String numberOfProjector = projectorNumber.getText();
                         String readDataSQL1 = "DELETE FROM Projectors WHERE number=" + numberOfProjector;
 
                         session2.createSQLQuery(readDataSQL1).executeUpdate();
 
                         log.append("\n" + "Проектор " +  numberOfProjector + " удален из списка выданных");
-                        saveInLog("Projector " +  numberOfProjector + " were deleted from Notebooks successfully, " + currentDateTime.toString());
+                        saveInLog("Проектор " +  numberOfProjector + " удален из списка выданных, " + currentDateTime.toString());
                         // Коммит транзакции
                         session2.getTransaction().commit();
 
@@ -132,7 +130,7 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
 
     @Override
     public void saveInLog(String text) {
-        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/lesson4/log.txt";
+        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/diplom/log.txt";
         try (FileWriter writer = new FileWriter(LOG_PATH, true)) {
             writer.write(text);
             writer.write("\n");

@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.lesson4.models;
+package ru.geekbrains.junior.diplom.models;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,12 +12,11 @@ import java.io.FileWriter;
 import java.time.LocalDateTime;
 
 public class NotebookIssuance extends JFrame implements LoggerView {
-    public static final int WIDTH = 400;
-    public static final int HEIGHT = 300;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 200;
     JButton btnAddNotebook;
     JTextField  studentLastName, notebookNumber, groupNumber;
-    String textSum = "";
-
+    JTextArea log;
     JPanel headerPanel;
 
     public NotebookIssuance() {
@@ -26,8 +25,8 @@ public class NotebookIssuance extends JFrame implements LoggerView {
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Notebook.class)
                 .buildSessionFactory();
-        setSize(WIDTH, HEIGHT/2);
-        setLocation(95, 250);
+        setSize(WIDTH, HEIGHT);
+        setLocation(3, 250);
         setResizable(false);
         setTitle("ВЫДАЧА НОУТБУКА. Заполните поля!");
 
@@ -37,35 +36,38 @@ public class NotebookIssuance extends JFrame implements LoggerView {
     private void createPanelNotebook(SessionFactory sessionFactory) {
         add(createHeaderPanel(), BorderLayout.NORTH);
         add(btnAddNotebook = new JButton("Запись информации"), BorderLayout.SOUTH);
-
+        log = new JTextArea();
+        log.setEditable(false);
+        add(new JScrollPane(log));
         btnAddNotebook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (true) {
-                    System.out.println(textSum);
-                    LocalDateTime currentDateTime = LocalDateTime.now();
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                     Notebook notebook = new Notebook(studentLastName.getText(),groupNumber.getText(),
                             Integer.parseInt(notebookNumber.getText()), timestamp);
                     saveInLog(String.valueOf(notebook));
                     System.out.println(notebook);
-// Создание сессии
+                    // Создание сессии
                     Session session = sessionFactory.getCurrentSession();
 
                     try {
                         // Начало транзакции
                         session.beginTransaction();
+                        log.setText("");
                         session.save(notebook);
-                        System.out.println("Object notebook save successfully");
                         Notebook retrievedNotebook = session.get(Notebook.class, notebook.getId());
-                        System.out.println("Object notebook retrieved successfully");
-                        System.out.println("Retrieved notebook object: " + retrievedNotebook);
+
+                        log.append("Записано: " + retrievedNotebook);
                         // Коммит транзакции
                         session.getTransaction().commit();
                     } finally {
                         session.close();
                     }
                     writing();
+                    notebookNumber.setForeground(Color.BLACK);
+                    groupNumber.setForeground(Color.BLACK);
+                    studentLastName.setForeground(Color.BLACK);
 
                 } else {
 
@@ -84,10 +86,10 @@ public class NotebookIssuance extends JFrame implements LoggerView {
                         Integer.parseInt(notebookNumber.getText());
                         notebookNumber.setForeground(Color.GREEN);
                     }catch (NumberFormatException ex) {
-                        System.out.println("Введите число");
+                        notebookNumber.setForeground(Color.RED);
+                        log.append("Введите число в поле НОМЕР!!!");
 
                     }
-                    textSum= textSum + notebookNumber.getText();
                 }
             }
         });
@@ -98,7 +100,6 @@ public class NotebookIssuance extends JFrame implements LoggerView {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n'){
                     studentLastName.setForeground(Color.GREEN);
-                    textSum= textSum + " " + studentLastName.getText();  //To do
                 }
             }
         });
@@ -110,7 +111,6 @@ public class NotebookIssuance extends JFrame implements LoggerView {
                 if (e.getKeyChar() == '\n'){
                     groupNumber.getText();
                     groupNumber.setForeground(Color.GREEN);
-                    textSum = textSum + " " + groupNumber.getText();
                 }
 
             }
@@ -146,7 +146,7 @@ private void closing (SessionFactory sessionFactory){
 
     @Override
     public void saveInLog(String text) {
-        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/lesson4/log.txt";
+        String LOG_PATH = "./src/main/java/ru/geekbrains/junior/diplom/log.txt";
         try (FileWriter writer = new FileWriter(LOG_PATH, true)) {
             writer.write(text);
             writer.write("\n");
