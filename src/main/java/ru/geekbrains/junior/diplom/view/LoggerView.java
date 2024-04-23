@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.view;
 
 public interface LoggerView {
     String getLog();

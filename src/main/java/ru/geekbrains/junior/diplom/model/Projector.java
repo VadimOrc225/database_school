@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -6,18 +6,20 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "Projectors")
 public class Projector {
+
+    //region поля
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-//    private int number;
     private String lastname;
     private String group1;
     private String number;
 
     @Basic
     private Timestamp sqlTimestamp;
+    //endregion
 
+    //region конструкторы
     public Projector(String lastname, String group1, String number, Timestamp sqlTimestamp) {
 
         this.lastname = lastname;
@@ -25,9 +27,8 @@ public class Projector {
         this.number = number;
         this.sqlTimestamp = sqlTimestamp;
 
-//        this.group = group;
-//        this.dateTime = dateTime;
     }
+
     public Projector(int id, String lastname, String group1, String number, Timestamp sqlTimestamp) {
 
         this.id = id;
@@ -35,14 +36,16 @@ public class Projector {
         this.group1 = group1;
         this.number = number;
         this.sqlTimestamp = sqlTimestamp;
-//        this.group = group;
-//        this.dateTime = dateTime;
-    }
-    public Projector(){
 
     }
 
+    public Projector() {
 
+    }
+
+    //endregion
+
+    //region методы
 
     public int getId() {
         return id;
@@ -72,9 +75,6 @@ public class Projector {
         this.group1 = group1;
     }
 
-//    public void setDateTime(Timestamp dateTime) {
-//        this.dateTime = dateTime;
-//    }
 
     public String getNumber() {
         return number;
@@ -88,4 +88,5 @@ public class Projector {
                 " из группы " + group1 +
                 "; " + sqlTimestamp + '}';
     }
+    //endregion
 }

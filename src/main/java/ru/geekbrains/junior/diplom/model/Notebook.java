@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -19,22 +19,18 @@ public class Notebook {
 
     //region конструкторы
     public Notebook(String lastname, String group1, int number, Timestamp sqlTimestamp) {
-
         this.lastname = lastname;
         this.group1 = group1;
         this.number = number;
         this.sqlTimestamp = sqlTimestamp;
-
     }
 
     public Notebook(int id, String lastname, String group1, int number, Timestamp sqlTimestamp) {
-
         this.id = id;
         this.lastname = lastname;
         this.group1 = group1;
         this.number = number;
         this.sqlTimestamp = sqlTimestamp;
-
     }
 
     public Notebook() {

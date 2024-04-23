@@ -29,8 +29,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mention annotated entity class -->
-        <mapping class="ru.geekbrains.junior.diplom.models.Projector"/>
-        <mapping class="ru.geekbrains.junior.diplom.models.Notebook"/>
+        <mapping class="ru.geekbrains.junior.diplom.model.Projector"/>
+        <mapping class="ru.geekbrains.junior.diplom.model.Notebook"/>
 
 
     </session-factory>

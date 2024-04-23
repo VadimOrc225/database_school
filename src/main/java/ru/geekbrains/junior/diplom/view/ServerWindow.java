@@ -1,4 +1,4 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,6 @@ public class ServerWindow extends JFrame implements LoggerView {
     public static final int HEIGHT = 500;
 
 
-
     JButton btnNotebookIssuance, btnNotebookAcceptance, btnProjectorIssuance, btnProjectorAcceptance,
             btnDopOperations;
     JTextArea log;
@@ -21,7 +20,7 @@ public class ServerWindow extends JFrame implements LoggerView {
 
     private final String LOG_PATH = "./src/main/java/ru/geekbrains/junior/diplom/log.txt";
 
-//    public Logger logger;
+    //    public Logger logger;
     String textSum = "";
 
     public ServerWindow() {
@@ -46,10 +45,10 @@ public class ServerWindow extends JFrame implements LoggerView {
         btnDopOperations.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    log.setText("");
-                    log.setForeground(Color.BLACK);
-                    System.out.println("Логи выводятся!!!");
-                    log.append(getLog());
+                log.setText("");
+                log.setForeground(Color.BLACK);
+                System.out.println("Логи выводятся!!!");
+                log.append(getLog());
 
             }
         });
@@ -61,67 +60,49 @@ public class ServerWindow extends JFrame implements LoggerView {
         btnNotebookAcceptance = new JButton("Сдача ноутбука");
         btnProjectorIssuance = new JButton("Выдача проектора");
         btnProjectorAcceptance = new JButton("Сдача проектора");
+        // кнопка выдачи ноутбука
         btnNotebookIssuance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
-                    log.setForeground(Color.RED);
-                    log.setText("");
-                    log.append("\n" + "  Выдайте ноутбук! Посмотрите на номер ноутбука!");
-                    NotebookIssuance notebookWindow = new NotebookIssuance();
+                log.setForeground(Color.RED);
+                log.setText("");
+                log.append("\n" + "  Выдайте ноутбук! Посмотрите на номер ноутбука!");
+                NotebookIssuance notebookWindow = new NotebookIssuance();
 
-                } else {
-
-                    saveInLog("Что-то не так!");
-                }
             }
         });
-
+        // кнопка приема ноутбука
         btnNotebookAcceptance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
-                    log.setForeground(Color.RED);
-                    log.setText("");
-                    log.append("\n" + "  Примите ноутбук! Проверьте комплектность");
-                    NotebookAcceptance notebookAcceptance = new NotebookAcceptance();
-                } else {
-
-                    saveInLog("Что-то не так!");
-                }
+                log.setForeground(Color.RED);
+                log.setText("");
+                log.append("\n" + "  Примите ноутбук! Проверьте комплектность");
+                NotebookAcceptance notebookAcceptance = new NotebookAcceptance();
             }
         });
+        // кнопка выдача проектора
         btnProjectorIssuance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
-                    log.setForeground(Color.RED);
-                    log.setText("");
-                    log.append("\n" + "  Выдайте проектор! ");
-                    ProjectorIssuance projectorIssuance = new ProjectorIssuance();
-                } else {
-
-                    saveInLog("Что-то не так!");
-                }
+                log.setForeground(Color.RED);
+                log.setText("");
+                log.append("\n" + "  Выдайте проектор! ");
+                ProjectorIssuance projectorIssuance = new ProjectorIssuance();
             }
         });
-
+        // кнопка приема проектора
         btnProjectorAcceptance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
-                    log.setForeground(Color.RED);
-                    log.setText("");
-                    log.append("\n" + "  Примите проектор. Проверьте комплектность ");
-                    ProjectorAcceptance projectorAcceptance = new ProjectorAcceptance();
-                } else {
-
-                    saveInLog("Что-то не так!");
-                }
+                log.setForeground(Color.RED);
+                log.setText("");
+                log.append("\n" + "  Примите проектор. Проверьте комплектность ");
+                ProjectorAcceptance projectorAcceptance = new ProjectorAcceptance();
             }
         });
 
-
+        //добавляем кнопки на панель
         panel.add(btnNotebookIssuance);
         panel.add(btnNotebookAcceptance);
         panel.add(btnProjectorIssuance);
@@ -129,7 +110,6 @@ public class ServerWindow extends JFrame implements LoggerView {
 
         return panel;
     }
-
 
     @Override
     public String getLog() {
@@ -155,8 +135,5 @@ public class ServerWindow extends JFrame implements LoggerView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
 }
