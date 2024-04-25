@@ -1,8 +1,9 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.view;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.geekbrains.junior.diplom.model.Projector;
 
 import javax.swing.*;
 import java.awt.*;

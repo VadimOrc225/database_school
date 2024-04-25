@@ -1,92 +1,92 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.view;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.geekbrains.junior.diplom.model.Notebook;
 
+import java.sql.Timestamp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileWriter;
-import java.sql.Timestamp;
 
-public class ProjectorIssuance extends JFrame implements LoggerView {
+public class NotebookIssuance extends JFrame implements LoggerView {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 200;
-    JButton btnAddProjector;
-    JTextField  studentLastName, projectorNumber, groupNumber;
+    JButton btnAddNotebook;
+    JTextField  studentLastName, notebookNumber, groupNumber;
     JTextArea log;
     JPanel headerPanel;
 
-    public ProjectorIssuance() {
+    public NotebookIssuance() {
         // Создание фабрики сессий
-        SessionFactory sessionFactory2 = new Configuration()
+        SessionFactory sessionFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Projector.class)
+                .addAnnotatedClass(Notebook.class)
                 .buildSessionFactory();
         setSize(WIDTH, HEIGHT);
-        setLocation(3, 450);
+        setLocation(3, 250);
         setResizable(false);
-        setTitle("ВЫДАЧА ПРОЕКТОРА. Заполните поля!");
+        setTitle("ВЫДАЧА НОУТБУКА. Заполните поля!");
 
-        createPanelProjector(sessionFactory2);
+        createPanelNotebook(sessionFactory);
         setVisible(true);
     }
-    private void createPanelProjector(SessionFactory sessionFactory2) {
+    private void createPanelNotebook(SessionFactory sessionFactory) {
         add(createHeaderPanel(), BorderLayout.NORTH);
+        add(btnAddNotebook = new JButton("Запись информации"), BorderLayout.SOUTH);
         log = new JTextArea();
         log.setEditable(false);
         add(new JScrollPane(log));
-        add(btnAddProjector = new JButton("Запись информации"), BorderLayout.SOUTH);
-
-        btnAddProjector.addActionListener(new ActionListener() {
+        btnAddNotebook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
 
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                    Projector projector = new Projector(studentLastName.getText(),groupNumber.getText(),
-                            projectorNumber.getText(), timestamp);
-                    saveInLog(String.valueOf(projector));
-                    System.out.println(projector);
-// Создание сессии
-                    Session session = sessionFactory2.getCurrentSession();
+                    Notebook notebook = new Notebook(studentLastName.getText(),groupNumber.getText(),
+                            Integer.parseInt(notebookNumber.getText()), timestamp);
+                    saveInLog(String.valueOf(notebook));
+                    System.out.println(notebook);
+                    // Создание сессии
+                    Session session = sessionFactory.getCurrentSession();
 
                     try {
                         // Начало транзакции
                         session.beginTransaction();
                         log.setText("");
-                        session.save(projector);
-                        Projector retrievedProjector = session.get(Projector.class, projector.getId());
-                        log.append("Записано: " + retrievedProjector);
+                        session.save(notebook);
+                        Notebook retrievedNotebook = session.get(Notebook.class, notebook.getId());
+
+                        log.append("Записано: " + retrievedNotebook);
                         // Коммит транзакции
                         session.getTransaction().commit();
                     } finally {
                         session.close();
                     }
                     writing();
+                    notebookNumber.setForeground(Color.BLACK);
+                    groupNumber.setForeground(Color.BLACK);
+                    studentLastName.setForeground(Color.BLACK);
 
-                } else {
-
-                }
             }
         });
     }
     private Component createHeaderPanel(){
         headerPanel = new JPanel(new GridLayout(2, 2));
-        projectorNumber = new JTextField("НОМЕР ПРОЕКТОРА");
-        projectorNumber.addKeyListener(new KeyAdapter() {
+        notebookNumber = new JTextField("НОМЕР НОУТБУКА");
+        notebookNumber.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n'){
-//                    try {
-                        projectorNumber.getText();
-                        projectorNumber.setForeground(Color.GREEN);
-//                    }catch (NumberFormatException ex) {
-//                        System.out.println("Введите число");
+                    try {
+                        Integer.parseInt(notebookNumber.getText());
+                        notebookNumber.setForeground(Color.GREEN);
+                    }catch (NumberFormatException ex) {
+                        notebookNumber.setForeground(Color.RED);
+                        log.append("Введите число в поле НОМЕР!!!");
 
-//                    }
-
+                    }
                 }
             }
         });
@@ -97,7 +97,6 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == '\n'){
                     studentLastName.setForeground(Color.GREEN);
-
                 }
             }
         });
@@ -109,13 +108,12 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
                 if (e.getKeyChar() == '\n'){
                     groupNumber.getText();
                     groupNumber.setForeground(Color.GREEN);
-
                 }
 
             }
 
         });
-        headerPanel.add(projectorNumber);
+        headerPanel.add(notebookNumber);
         headerPanel.add(new JPanel());
         headerPanel.add(studentLastName);
         headerPanel.add(groupNumber);
@@ -123,7 +121,7 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
         return headerPanel;
     }
     public void writing () {
-        System.out.println("Проектор добавлен к выданным!");
+        System.out.println("Ноутбук добавлен к выданным!");
     }
 
 
@@ -135,8 +133,8 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
 
         }
     }
-    private void closing (SessionFactory sessionFactory2){
-    sessionFactory2.close();
+private void closing (SessionFactory sessionFactory){
+    sessionFactory.close();
 }
     @Override
     public String getLog() {

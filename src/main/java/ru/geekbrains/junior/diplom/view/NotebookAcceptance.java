@@ -1,8 +1,9 @@
-package ru.geekbrains.junior.diplom.models;
+package ru.geekbrains.junior.diplom.view;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import ru.geekbrains.junior.diplom.model.Notebook;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,10 +56,11 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                                 log.append("\n" + "Удаляется из списка (принимается) ноутбук " + retrievedNotebook.getNumber());
                                 counter++;
                             }
-
                         }
-                        if(counter==0) { log.append("\n" + "Ноутбука " + notebookNumber.getText()+
-                                " нет в списке выданных! Введите другой номер!");}
+                        if (counter == 0) {
+                            log.append("\n" + "Ноутбука " + notebookNumber.getText() +
+                                    " нет в списке выданных! Введите другой номер!");
+                        }
 
                         Integer.parseInt(notebookNumber.getText());
                         notebookNumber.setForeground(Color.GREEN);
@@ -70,18 +72,16 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
 
                         // Закрытие  сессии
                         session1.close();
-
                     }
-
                 }
             }
         });
+
         headerPanel.add(notebookNumber);
         add(headerPanel, BorderLayout.NORTH);
         log = new JTextArea();
         log.setEditable(false);
         add(new JScrollPane(log));
-
         add(btnDeleteNotebook = new JButton("Удалить ноутбук из списка выданных"), BorderLayout.SOUTH);
 
         btnDeleteNotebook.addActionListener(new ActionListener() {
@@ -99,8 +99,8 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                         String numberOfNotebook = notebookNumber.getText();
                         String readDataSQL1 = "DELETE FROM Notebooks WHERE number=" + numberOfNotebook;
                         session2.createSQLQuery(readDataSQL1).executeUpdate();
-                        log.append("\n" + "Ноутбук " +  numberOfNotebook + " удален из списка выданных");
-                        saveInLog("Ноутбук " +  numberOfNotebook + " удален из списка выданных, " + currentDateTime.toString());
+                        log.append("\n" + "Ноутбук " + numberOfNotebook + " удален из списка выданных");
+                        saveInLog("Ноутбук " + numberOfNotebook + " удален из списка выданных, " + currentDateTime.toString());
                         // Коммит транзакции
                         session2.getTransaction().commit();
 
