@@ -92,7 +92,7 @@ public class ProjectorIssuance extends JFrame implements LoggerView {
             }
         });
 
-        studentLastName = new JTextField("ВВЕДИТЕ ФАМИЛИЮ КУРСАНТА");
+        studentLastName = new JTextField("ВВЕДИТЕ ФАМИЛИЮ СТУДЕНТА");
         studentLastName.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {

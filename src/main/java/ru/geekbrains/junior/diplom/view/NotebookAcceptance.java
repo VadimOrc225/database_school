@@ -60,13 +60,15 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
                         if (counter == 0) {
                             log.append("\n" + "Ноутбука " + notebookNumber.getText() +
                                     " нет в списке выданных! Введите другой номер!");
+                            notebookNumber.setText("Повторите ввод номера");
+                            notebookNumber.setForeground(Color.RED);
                         }
 
                         Integer.parseInt(notebookNumber.getText());
                         notebookNumber.setForeground(Color.GREEN);
                     } catch (NumberFormatException ex) {
                         System.out.println("Введите число");
-
+                        notebookNumber.setForeground(Color.RED);
                     } finally {
                         session1.getTransaction().commit();
 
@@ -87,34 +89,28 @@ public class NotebookAcceptance extends JFrame implements LoggerView {
         btnDeleteNotebook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (true) {
-                    LocalDateTime currentDateTime = LocalDateTime.now();
+                LocalDateTime currentDateTime = LocalDateTime.now();
 
-                    // Удаление данных
-                    Session session2 = sessionFactory1.getCurrentSession();
-                    try {
-                        // Начало транзакции
-                        session2.beginTransaction();
-                        log.setText("");
-                        String numberOfNotebook = notebookNumber.getText();
-                        String readDataSQL1 = "DELETE FROM Notebooks WHERE number=" + numberOfNotebook;
-                        session2.createSQLQuery(readDataSQL1).executeUpdate();
-                        log.append("\n" + "Ноутбук " + numberOfNotebook + " удален из списка выданных");
-                        saveInLog("Ноутбук " + numberOfNotebook + " удален из списка выданных, " + currentDateTime.toString());
-                        // Коммит транзакции
-                        session2.getTransaction().commit();
+                // Удаление данных
+                Session session2 = sessionFactory1.getCurrentSession();
 
 
-                    } finally {
-                        // Закрытие  сессии
+                String numberOfNotebook = notebookNumber.getText();
+                if(numberOfNotebook.equals("Повторите ввод номера"))log.setText("Ноутбука с данным номером нет в списке выданных! Введите другой номер!");
+                else {
+                    // Начало транзакции
+                    session2.beginTransaction();
+                    log.setText("");
+                    String readDataSQL1 = "DELETE FROM Notebooks WHERE number=" + numberOfNotebook;
+                    session2.createSQLQuery(readDataSQL1).executeUpdate();
+                    log.append("\n" + "Ноутбук " + numberOfNotebook + " удален из списка выданных");
+                    saveInLog("Ноутбук " + numberOfNotebook + " удален из списка выданных, " + currentDateTime.toString());
+                    // Коммит транзакции
+                    session2.getTransaction().commit();}
 
-                        session2.close();
+                // Закрытие  сессии
 
-                    }
-
-                } else {
-
-                }
+                session2.close();
 
             }
         });
