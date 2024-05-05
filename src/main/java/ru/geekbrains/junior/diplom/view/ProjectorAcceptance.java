@@ -58,13 +58,15 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
                             if (Objects.equals(projectorX.getNumber(), projectorNumber.getText())) {
                                 Projector retrievedProjector = projectorX;
                                 log.append("\n" + "Удаляется из списка (принимается) проектор " + retrievedProjector.getNumber());
+                            } else {
+                                log.append("\n" + "Проектора " + projectorNumber.getText() + " нет в списке выданных! Введите другой номер!");
+                                projectorNumber.setText("Нет такого");
                             }
-                            else log.append("\n" + "Проектора " + projectorNumber.getText()+ " нет в списке выданных! Введите другой номер!");
                         }
 
                         projectorNumber.setForeground(Color.GREEN);
                     } catch (NumberFormatException ex) {
-                        System.out.println("УПС");
+                        System.out.println("Ошибка");
 
                     } finally {
                         session1.getTransaction().commit();
@@ -96,14 +98,17 @@ public class ProjectorAcceptance extends JFrame implements LoggerView {
                     try {
                         // Начало транзакции
                         session2.beginTransaction();
-                        log.setText("");
                         String numberOfProjector = projectorNumber.getText();
-                        String readDataSQL1 = "DELETE FROM Projectors WHERE number=" + numberOfProjector;
+                        if (numberOfProjector.equals("Нет такого")) log.setText("Введите другой номер");
+                        else {
+                            log.setText("");
+                            String readDataSQL1 = "DELETE FROM Projectors WHERE number=" + numberOfProjector;
 
-                        session2.createSQLQuery(readDataSQL1).executeUpdate();
+                            session2.createSQLQuery(readDataSQL1).executeUpdate();
 
-                        log.append("\n" + "Проектор " +  numberOfProjector + " удален из списка выданных");
-                        saveInLog("Проектор " +  numberOfProjector + " удален из списка выданных, " + currentDateTime.toString());
+                            log.append("\n" + "Проектор " + numberOfProjector + " удален из списка выданных");
+                            saveInLog("Проектор " + numberOfProjector + " удален из списка выданных, " + currentDateTime.toString());
+                        }
                         // Коммит транзакции
                         session2.getTransaction().commit();
 
